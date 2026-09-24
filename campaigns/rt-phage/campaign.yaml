@@ -1,0 +1,48 @@
+# Campaign: uncharacterised reverse transcriptases in phage genomes.
+#
+# The question this campaign asks is the one the article's workflow is built
+# around: within a large, well-studied enzyme family, which members sit in a
+# genomic context that no described system accounts for?
+
+name: rt-phage
+family: RT
+question: >
+  Which reverse transcriptases occupy a genomic architecture that is not
+  explained by any described RT-associated system (retron, group II intron,
+  DGR, RT-Cas1, or abortive-infection RT), and which of those are supported
+  well enough to be worth bench time?
+
+# local:<path> serves a generated corpus; "live" serves UniProt/NCBI/InterPro.
+source: local:corpus
+catalogue: builtin
+backend: rubric
+max_workers: 8
+
+# Search policy. These are campaign decisions, not constants: the right
+# cut-off depends on how divergent the family is.
+profile_min_z: 8.0
+profile_max_evalue: 1.0e-5
+profile_min_core_coverage: 0.7
+
+# Two labelling thresholds. The strict pair decides what counts as an
+# "unknown" neighbour; the sensitive pair is used by triage to catch diverged
+# members of described families masquerading as unknowns.
+#
+# Significance is a z-score against each family profile's own shuffled-decoy
+# null. Neither a raw bit score nor a fixed E-value is comparable across
+# families of different lengths, and thresholding that way turned every short
+# partner family into a false "unknown" -- which reads downstream as novelty.
+# The reproduce gate caught it.
+label_min_z: 6.0
+label_min_coverage: 0.20
+sensitive_label_min_z: 4.0
+sensitive_label_min_coverage: 0.15
+sensitive_label_max_evalue: 1.0e-3
+partner_known_neglog_e_cut: 3.0
+
+neighbourhood_bp: 12000
+operon_max_gap: 60
+min_novelty: 0.35
+max_candidates: 60
+background_loci: 250
+cluster_identity: 0.9

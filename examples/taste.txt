@@ -1,0 +1,36 @@
+Taste analysis
+==============
+
+corpus: 60 reports, 23 promoted, 37 set aside
+labels: verdicts
+
+Feature discrimination (ranked by distance from chance):
+  partner_known_neglog_e: AUROC 0.24 (in rubric); promoted mean 0.0291 vs set-aside 14.9
+  partner_known_homology_bits: AUROC 0.24 (NOT in rubric); promoted mean 1.83 vs set-aside 61
+  array_spacer_identity: AUROC 0.25 (NOT in rubric); promoted mean 0.145 vs set-aside 0.325
+  novelty: AUROC 0.32 (in rubric); promoted mean 0.535 vs set-aside 0.732
+  n_phyla: AUROC 0.34 (in rubric); promoted mean 1.78 vs set-aside 3
+  n_predictions: AUROC 0.65 (in rubric); promoted mean 3.83 vs set-aside 3.32
+  partner_conservation: AUROC 0.62 (in rubric); promoted mean 1 vs set-aside 0.757
+  association_significant: AUROC 0.62 (NOT in rubric); promoted mean 1 vs set-aside 0.757
+  n_independent_loci: AUROC 0.60 (in rubric); promoted mean 15.7 vs set-aside 12
+  n_clusters: AUROC 0.60 (in rubric); promoted mean 15.7 vs set-aside 12
+  triad_intact: AUROC 0.58 (in rubric); promoted mean 1 vs set-aside 0.838
+  clade_restricted: AUROC 0.57 (in rubric); promoted mean 0.609 vs set-aside 0.46
+
+Gate activity:
+  partner_is_not_known: eliminated 20
+  reproducible_association: eliminated 13
+  has_testable_component: eliminated 9
+  catalytic_core: eliminated 6
+  not_redundant: eliminated 4
+  inert (never fired): domain_coverage, not_low_complexity, significance, novelty
+
+Proposals:
+  [held/circular] reweight partner_known_neglog_e: separation AUROC 0.24 suggests raising this criterion's weight
+  [APPLIED/structural] add_score partner_known_homology_bits: add as a ranking criterion with weight 0.5 (inverted: lower is better)
+  [APPLIED/structural] add_score array_spacer_identity: add as a ranking criterion with weight 0.5 (inverted: lower is better)
+  [held/structural] retire_gate domain_coverage: eliminated nothing in this corpus; either it is redundant with another gate or its threshold is unreachable
+  [held/structural] retire_gate not_low_complexity: eliminated nothing in this corpus; either it is redundant with another gate or its threshold is unreachable
+  [held/structural] retire_gate significance: eliminated nothing in this corpus; either it is redundant with another gate or its threshold is unreachable
+  [held/structural] retire_gate novelty: eliminated nothing in this corpus; either it is redundant with another gate or its threshold is unreachable

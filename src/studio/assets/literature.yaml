@@ -1,0 +1,100 @@
+# Offline literature digest for the reverse-transcriptase campaign.
+#
+# WHAT THIS IS. A bundled summary of what is publicly established about
+# RT-associated prokaryotic systems, written as architectural claims the
+# pipeline can check itself against. It is used only when the studio runs with
+# the local source, where no literature API is reachable.
+#
+# It carries no author lists, DOIs or accession numbers, because inventing
+# those would be worse than having none: a reader could not tell a fabricated
+# citation from a real one. With the live source, `studio survey` queries
+# Europe PMC instead and returns real records with real identifiers, and the
+# report templates cite those.
+#
+# Each entry states claims in the form the survey stage consumes: an
+# architectural assertion plus the observable that would confirm it.
+
+digest_version: 1
+family: reverse_transcriptase
+disclaimer: >
+  Bundled offline digest of public knowledge. Not retrieved records; contains
+  no citations. Use the live source for citable literature.
+
+entries:
+  - pub_id: digest:rt-family
+    title: Reverse transcriptases form a broad prokaryotic superfamily
+    claims:
+      - "RTs share a palm domain with a two-metal-ion active site."
+      - "The catalytic core is motif A (an aspartate in a hydrophobic bed) and
+         motif C (the YxDD aspartate pair); both are required for polymerisation."
+      - "Prokaryotic RTs vastly outnumber the characterised ones; most family
+         members belong to no described system."
+    observable: "Profile hit to the RT palm domain with motifs A and C intact."
+
+  - pub_id: digest:retron
+    title: Retrons are a tripartite RT, non-coding RNA and effector module
+    claims:
+      - "A retron comprises an RT, an adjacent msr/msd non-coding region, and an
+         effector protein, usually encoded in one operon."
+      - "The RT synthesises a branched RNA-DNA hybrid (msDNA) from msr/msd."
+      - "Retrons function in phage defence; the effector is toxic when released."
+      - "msr/msd is a single structured cassette, NOT a multi-copy repeat array."
+    observable: "RT beside an effector gene, with no evenly spaced repeat array."
+
+  - pub_id: digest:group-ii-intron
+    title: Group II introns encode a maturase RT within a structured intron
+    claims:
+      - "The intron-encoded protein carries RT, maturase (X/thumb) and often an
+         endonuclease domain in one long polypeptide."
+      - "It is encoded inside the intron RNA rather than beside a partner gene."
+      - "No separate non-coding repeat array accompanies the element."
+    observable: "Long RT, maturase domain, no partner gene and no array."
+
+  - pub_id: digest:dgr
+    title: Diversity-generating retroelements mutagenise a variable region
+    claims:
+      - "A DGR has an RT, an accessory protein (Avd), a template repeat (TR) and
+         a variable repeat (VR) in the target gene."
+      - "TR and VR are a PAIR of near-identical repeats, not a multi-copy array."
+      - "Mutagenesis is adenine-specific and occurs during cDNA synthesis."
+    observable: "RT with an Avd partner and exactly two related repeat copies."
+
+  - pub_id: digest:rt-cas1
+    title: Some CRISPR-Cas adaptation modules carry a fused or adjacent RT
+    claims:
+      - "RT-Cas1 fusions allow spacer acquisition directly from RNA."
+      - "The locus carries cas1 and usually cas2, plus a canonical CRISPR array."
+      - "CRISPR repeats are typically 28-37 bp with spacers of similar length."
+    observable: "RT adjacent to cas1 with a CRISPR array of ~30 bp repeats."
+
+  - pub_id: digest:abi-rt
+    title: Abortive-infection RTs act in phage defence without a non-coding array
+    claims:
+      - "AbiA, AbiK and Abi-P2 RTs perform template-independent polymerisation."
+      - "They are encoded alone or with a small partner and have no array."
+    observable: "RT with an Abi-family partner and no non-coding component."
+
+  - pub_id: digest:neighbourhood-method
+    title: Conserved gene neighbourhood is evidence of a functional system
+    claims:
+      - "Genes that stay adjacent across distant genomes are usually functionally
+         coupled; isolated adjacency is not evidence."
+      - "Co-directional genes separated by less than ~60 bp are likely to be
+         co-transcribed."
+      - "An association claim needs a background of loci from the same genomes,
+         and correction for the number of neighbour labels tested."
+    observable: "Partner conservation across non-redundant, taxonomically
+      dispersed loci, with a corrected enrichment p-value."
+
+  - pub_id: digest:pitfalls
+    title: Recurring failure modes in comparative-genomics hypothesis generation
+    claims:
+      - "A profile hit that misses the catalytic core is a fragment, not a member."
+      - "Near-identical sequences from one over-sequenced clade are one
+         observation, not many."
+      - "Tandem repeats with near-identical spacers are VNTRs, not spacer arrays."
+      - "A deeply diverged member of a described family will fall below a strict
+         label threshold and masquerade as an unknown partner."
+      - "Composition-biased and low-complexity regions generate profile hits that
+         carry no homology signal."
+    observable: "Each of these is a check the triage stage must run explicitly."

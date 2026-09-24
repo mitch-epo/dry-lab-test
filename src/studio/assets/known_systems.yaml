@@ -1,0 +1,118 @@
+# Catalogue of described reverse-transcriptase-associated systems.
+#
+# This is the "described systems" the search stage measures novelty against: a
+# locus is only interesting if it does NOT fit anything here. Each entry records
+# the architectural features that identify the system and, just as importantly,
+# the features that rule it out -- a retron with a repeat array is not a retron.
+#
+# The architectural descriptions follow the published literature on RT-
+# associated prokaryotic systems (retrons, group II introns, diversity-
+# generating retroelements, RT-associated CRISPR-Cas, and abortive-infection
+# RTs). They are deliberately coarse: the catalogue's job is to answer "is this
+# already described?", not to be a classifier of record.
+
+catalogue_version: 1
+family: reverse_transcriptase
+
+systems:
+  - system_id: retron
+    name: Retron
+    required_labels: [RT, retron_effector]
+    optional_labels: [cold_shock, hnh_nuclease]
+    forbidden_labels: [cas1, cas2, avd]
+    requires_array: false
+    # msr/msd is a single non-coding hairpin cassette, not a repeat array. A
+    # regularly spaced multi-copy array beside a retron RT is not a retron
+    # feature and is the discriminating observation.
+    forbids_array: true
+    typical_anchor_aa: [230, 420]
+    reference: "Retron msr/msd + RT + effector tripartite architecture"
+    notes: >
+      RT produces a branched msDNA from the adjacent non-coding msr/msd region.
+      Effector partner varies (nuclease, ATPase, TIR) and is fused or adjacent.
+
+  - system_id: group_ii_intron
+    name: Group II intron RT (maturase)
+    required_labels: [RT]
+    optional_labels: [maturase_x, he_endonuclease]
+    forbidden_labels: [cas1, cas2, avd, retron_effector]
+    requires_array: false
+    forbids_array: true
+    typical_anchor_aa: [380, 620]
+    reference: "Group II intron-encoded protein: RT + X/thumb + En domains"
+    notes: >
+      Encoded within a structured intron RNA rather than beside a partner gene.
+      Long RT with fused maturase; absence of any partner gene is typical.
+
+  - system_id: dgr
+    name: Diversity-generating retroelement
+    required_labels: [RT, avd]
+    optional_labels: [dgr_target]
+    forbidden_labels: [cas1, cas2, retron_effector]
+    requires_array: false
+    # TR and VR are a pair of ~100 bp near-identical repeats, not a multi-copy
+    # evenly spaced array; the array detector requires three or more copies.
+    forbids_array: true
+    typical_anchor_aa: [280, 450]
+    reference: "DGR: RT + Avd accessory protein + TR/VR repeat pair"
+    notes: >
+      Introduces adenine-specific mutations into a variable region during
+      cDNA synthesis. Identified by the Avd partner and the TR/VR pair.
+
+  - system_id: rt_cas1
+    name: RT-associated CRISPR-Cas (RT-Cas1)
+    required_labels: [RT, cas1]
+    optional_labels: [cas2, cas6, cas7]
+    forbidden_labels: [retron_effector, avd]
+    requires_array: true
+    array_repeat_range: [26, 42]
+    typical_anchor_aa: [300, 500]
+    reference: "RT fused or adjacent to Cas1 in type III adaptation modules"
+    notes: >
+      Enables direct RNA spacer acquisition. Identified by cas1 adjacency plus
+      a canonical CRISPR array of 28-37 bp repeats.
+
+  - system_id: abi_rt
+    name: Abortive-infection RT (AbiA/AbiK-like)
+    required_labels: [RT, abi_partner]
+    optional_labels: []
+    forbidden_labels: [cas1, cas2, avd, retron_effector]
+    requires_array: false
+    forbids_array: true
+    typical_anchor_aa: [250, 600]
+    reference: "AbiA/AbiK/Abi-P2 family RTs in phage defence"
+    notes: >
+      Unusual RTs that perform template-independent polymerisation. Often
+      encoded alone or with a small partner; no associated non-coding array.
+
+  - system_id: unclassified_rt
+    name: Unclassified lone RT
+    required_labels: [RT]
+    optional_labels: []
+    forbidden_labels: [cas1, cas2, avd, retron_effector, abi_partner]
+    requires_array: false
+    forbids_array: true
+    typical_anchor_aa: [200, 700]
+    reference: "RT with no described partner or non-coding component"
+    notes: >
+      The catch-all. A locus matching only this entry is not "described" in any
+      useful sense, so the search stage treats a match here as weak evidence of
+      prior description and still scores residual novelty.
+
+# Positive controls for the reproduce stage. The pipeline must recover each of
+# these from the corpus, at the stated recall, before it is allowed to report
+# novel candidates. A methods check that the pipeline can fail is the only kind
+# worth running.
+reproduction_targets:
+  - system_id: retron
+    min_recall: 0.70
+    min_precision: 0.80
+  - system_id: rt_cas1
+    min_recall: 0.70
+    min_precision: 0.80
+  - system_id: dgr
+    min_recall: 0.60
+    min_precision: 0.80
+  - system_id: group_ii_intron
+    min_recall: 0.60
+    min_precision: 0.75

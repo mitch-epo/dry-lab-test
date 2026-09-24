@@ -1,0 +1,29 @@
+Scoring run demo against withheld ground truth
+========================================================
+
+Novel systems planted   : 25
+  reached the candidate list: 23
+  promoted to the bench     : 23
+
+Per planted system:
+  novel:ART-like: 15 planted, 14 became candidates, 14 promoted
+  novel:orphan-partner: 10 planted, 9 became candidates, 9 promoted
+
+Decoys:
+  [CAUGHT] decoy:dead-rt: 6 planted, 6 reached triage, 6 killed, 0 promoted (by 
+catalytic_core x6)
+  [CAUGHT] decoy:distant-array: 6 planted, 3 reached triage, 3 killed, 0 
+promoted (by reproducible_association x3, has_testable_component x3)
+  [CAUGHT] decoy:diverged-cas1: 6 planted, 2 reached triage, 2 killed, 0 
+promoted (by partner_is_not_known x2, reproducible_association x1, not_redundant
+x1)
+  [CAUGHT] decoy:rt-fragment: 6 planted, 0 reached triage, 0 killed, 0 promoted
+  [CAUGHT] decoy:singleton-partner: 2 planted, 2 reached triage, 2 killed, 0 
+promoted (by reproducible_association x2, not_redundant x2)
+  [CAUGHT] decoy:vntr: 6 planted, 6 reached triage, 6 killed, 0 promoted (by 
+reproducible_association x6, has_testable_component x6)
+
+Described systems promoted: 0 (any number above zero is a rediscovery leak)
+Total promoted            : 23
+
+VERDICT: clean -- 0 decoy classes leaked, 0 described systems promoted

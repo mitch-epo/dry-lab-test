@@ -1,0 +1,12 @@
+Methods check
+=============
+
+[PASS] shuffled-protein-false-positive-rate: observed 0, allowed <= 0.01
+[PASS] shuffled-dna-array-false-positive-rate: observed 0, allowed <= 0.04
+
+[PASS] retron: recall 1.00 (>= 0.70), precision 1.00 (>= 0.80) on 37 instances
+[PASS] rt_cas1: recall 0.90 (>= 0.70), precision 1.00 (>= 0.80) on 21 instances
+[PASS] dgr: recall 1.00 (>= 0.60), precision 1.00 (>= 0.80) on 23 instances
+[PASS] group_ii_intron: recall 0.92 (>= 0.60), precision 1.00 (>= 0.75) on 98 instances
+
+GATE: PASSED

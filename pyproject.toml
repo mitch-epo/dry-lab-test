@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molecular-design-studio"
+version = "0.1.0"
+description = "A dry-lab studio that turns an uncharacterised protein family into a short list of lab-testable hypotheses."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "pydantic>=2.5",
+    "jinja2>=3.1",
+    "httpx>=0.26",
+    "typer>=0.9",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+live = ["anthropic>=0.40"]
+
+[project.scripts]
+studio = "studio.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+studio = ["agents/prompts/*.md", "assets/*.yaml", "render/templates/*.md.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
