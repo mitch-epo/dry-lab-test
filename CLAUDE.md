@@ -41,6 +41,16 @@ anything in `bio/profile.py`, `bio/iterate.py` or the reference set.
 
 ## Conventions
 
+**Do not use `X | Y` unions inside a pydantic model.** Pydantic resolves a
+model's annotations at runtime, so PEP 604 syntax is evaluated even under
+`from __future__ import annotations` and raises on Python 3.9 — which is the
+floor, because it is what stock macOS ships. Use `Optional[X]` / `Union[X, Y]`
+in `schemas.py`, and anywhere else a library reads annotations at runtime
+(pydantic models, typer command signatures). Ordinary function signatures use
+`|` freely; those stay strings and are never evaluated. The failure is silent
+on a newer interpreter, so CI runs the suite on 3.9 as well as on the newest
+release.
+
 - `bio/` is network-free and deterministic. Keep it that way: the reproduce
   stage is meaningless if methods drift between runs.
 - Every claim a report makes carries an `Evidence` record with a `method` and

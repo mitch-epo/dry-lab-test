@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.9 is the floor because it is what stock macOS ships, and someone
+        # trying this on a Mac should not have to install a Python first.
+        # The newest release is tested alongside it so the floor is a real
+        # commitment rather than an untested claim: the failure mode is
+        # silent, since PEP 604 unions work everywhere except inside a
+        # pydantic model, where annotations are evaluated at runtime.
+        python-version: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e '.[dev]'
+      - run: pytest -q
+
+  campaign:
+    # The end-to-end assertion that matters: the planted novel system is
+    # recovered and every decoy class is eliminated. `studio score` exits
+    # non-zero if a decoy leaks or a described system is promoted.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install .
+      - run: studio build-corpus campaigns/rt-phage/corpus
+      - run: studio run campaigns/rt-phage --run-id ci
+      - run: studio score campaigns/rt-phage --run-id ci

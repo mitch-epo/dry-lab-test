@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -192,7 +192,12 @@ class Manifest(BaseModel):
     rubric_version: int = 0
     backend: str = ""
     stages: list[StageRecord] = Field(default_factory=list)
-    gate_passed: bool | None = None
+    # Optional[...] rather than `bool | None`: pydantic resolves a model's
+    # annotations at runtime, so PEP 604 unions inside a model are evaluated
+    # even under `from __future__ import annotations` and fail on Python 3.9.
+    # Ordinary function signatures in this project use `|` freely -- those
+    # stay strings and are never evaluated.
+    gate_passed: Optional[bool] = None
     counts: dict[str, int] = Field(default_factory=dict)
 
     def stage(self, name: str) -> StageRecord | None:

@@ -7,7 +7,7 @@ name = "molecular-design-studio"
 version = "0.1.0"
 description = "A dry-lab studio that turns an uncharacterised protein family into a short list of lab-testable hypotheses."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 dependencies = [
     "numpy>=1.24",
     "pydantic>=2.5",
