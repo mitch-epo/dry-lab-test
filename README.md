@@ -29,11 +29,13 @@ survey ──▶ reproduce ──▶ search ──▶ report ──▶ triage �
 
 ## Quick start
 
-Python 3.10+. No API key and no network access are needed for the default
-configuration.
+**Python 3.9+**, which includes the 3.9 that stock macOS ships, so there is no
+Python to install first. No API key and no network access are needed for the
+default configuration.
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
+pip install --upgrade pip        # see the note below if you skip this
 pip install -e .
 
 studio build-corpus campaigns/rt-phage/corpus   # offline corpus (simulated)
@@ -41,6 +43,14 @@ studio run campaigns/rt-phage                   # the full campaign
 studio score campaigns/rt-phage                 # grade it against withheld truth
 studio show campaigns/rt-phage                  # the run summary
 ```
+
+> **On macOS you probably need that pip upgrade.** The Python bundled with
+> Xcode's command line tools ships pip 21.2.4, which predates PEP 660 and
+> cannot do an editable install of a project that has only a `pyproject.toml`.
+> It fails with `File "setup.py" or "setup.cfg" not found` — which names the
+> wrong problem, since nothing is missing and the pip is simply too old.
+> Either upgrade pip as above, or install non-editable with `pip install .`,
+> which works unchanged on pip 21.2.4.
 
 Measured on a 4-core cloud container (Python 3.11), from a fresh clone:
 
