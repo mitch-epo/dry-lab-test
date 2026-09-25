@@ -133,6 +133,15 @@ def score(
             raise typer.BadParameter("scoring needs a local corpus")
         corpus = Path(spec[6:])
 
+    truth = Path(corpus) / "TRUTH.withheld.json"
+    if not truth.exists():
+        raise typer.BadParameter(
+            f"no ground truth at {truth}. Scoring compares a run against the "
+            f"answer key a generated corpus withholds, so it needs that corpus "
+            f"present: run `studio build-corpus {corpus}` first. A campaign "
+            f"reading live databases has no answer key and cannot be scored."
+        )
+
     report = score_run(run_dir, corpus)
     console.print(report.text())
     raise typer.Exit(code=0 if report.clean else 1)

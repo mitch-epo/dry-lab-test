@@ -29,7 +29,11 @@ survey ──▶ reproduce ──▶ search ──▶ report ──▶ triage �
 
 ## Quick start
 
+Python 3.10+. No API key and no network access are needed for the default
+configuration.
+
 ```bash
+python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 
 studio build-corpus campaigns/rt-phage/corpus   # offline corpus (simulated)
@@ -38,7 +42,27 @@ studio score campaigns/rt-phage                 # grade it against withheld trut
 studio show campaigns/rt-phage                  # the run summary
 ```
 
-A full run on the reference corpus takes about seven minutes on one core.
+Measured on a 4-core cloud container (Python 3.11), from a fresh clone:
+
+| step | time |
+|---|---|
+| `build-corpus` | 5 s |
+| `run` (first time) | 5 min 30 s |
+| `run` (subsequent) | 2 min 40 s |
+| `pytest` | 2 min 10 s |
+
+The first run is slower because it bootstraps a profile for each of the 24
+reference families and caches them under `campaigns/rt-phage/.cache`. The work
+is CPU-bound and mostly single-threaded, so clock speed matters more than core
+count; `max_workers` in `campaign.yaml` parallelises agent sessions, which are
+the cheap part under the default `rubric` backend.
+
+For a faster loop while changing things, build a smaller corpus — the planted
+systems and all six decoy classes are still present:
+
+```bash
+studio build-corpus campaigns/rt-phage/corpus --scale 0.35 --background 25
+```
 
 ### What a run produces
 
@@ -341,7 +365,8 @@ decoy when the feature under test is its sole apparent evidence.
 ## Tests
 
 ```bash
-pytest          # 68 tests, about three minutes
+pip install -e '.[dev]'
+pytest          # 68 tests, about two minutes
 ```
 
 The suite pins the properties conclusions rest on: BLOSUM62 values and
